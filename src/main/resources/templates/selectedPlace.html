@@ -27,13 +27,14 @@
     <div class="container">
         <div class="jumbotron">
 
-            <h2 class="display-4">Weather Forecast and History </h2>
+            <h1 class="display-1">Weather Forecast and History </h1>
+            <h2 class="display-2">Insert a place and get the forecast and weather history.</h2>
 
             <form method="post">
                 <div>
                     <div class="range_form">
                         <div class="form-group">
-                            <label for="nameOfPlace">Insert a place and get the forecast and weather history</label>
+                            <label for="nameOfPlace">Jaké je jeho jméno?</label>
                             <input class="form-control" id="nameOfPlace" aria-describedby="emailHelp"
                                    name="place">
 <!--                            <small id="emailHelp" class="form-text text-muted">Bez jména se formulář neodešle</small>-->
@@ -42,20 +43,20 @@
                 </div>
             </form>
 
-            <h3 class="display-4">Weather forecast for:</h3>
-            <h4 class="display-5" th:text="${address}">Amsterdam</h4>
+            <h3 class="display-3">Weather forecast for:</h3>
+            <h4 class="display-4" th:text="${address}">Amsterdam</h4>
 
 
-            <div class="row_icon_forecast">
+            <div class="row">
                 <div class="column_icon">
 
                     <img src="cloud.png" th:src="${'images/cloud.png'}" alt="Snow" style="width:100%">
 
                     <table th:each="day: ${iconForecast}">
-                        <tr style="text-align:center"><span th:text="${day.readableDate}"></span> </tr><br>
-                        <tr style="text-align:center"><span th:text="${day.temp}"> Celsius degrees</tr><br>
-                        <tr style="text-align:center"><span th:text="${day.precip}"></tr>expected precipitation<br>
-                        
+                        <tr th:text="${day.temp}"/>
+                        <tr th:text="${day.precip}"/>
+                        <tr th:text="${day.readableDate}"/>
+
                     </table>
 
                 </div>
