@@ -10,38 +10,22 @@ import java.text.SimpleDateFormat;
 @Data
 public class Weather {
 
+    private String datetimeStr;
+    private String readableDate;
     private Float temp;
     private Long datetime;
     private Float precip;
     private Float windchill;
-    private String date;
-
-
-    public Weather(Float temp, Long datetime, Float precip, Float windchill) {
-        this.temp = temp;
-        this.datetime = datetime;
-        this.precip = precip;
-        this.windchill = windchill;
-        this.date = countDate(datetime);
-    }
-
-    public String countDate(Long datetime) {
-        Timestamp ts = new Timestamp(datetime);
-        SimpleDateFormat jdf = new SimpleDateFormat("d MMMMM yyyy");
-        log.info(jdf.format(ts));
-        return jdf.format(ts);
-    }
-
-//    public Weather(Float temp, Long datetime, Float precip, Float windchill, String date) {
-//        this.temp = temp;
-//        this.datetime = datetime;
-//        this.precip = precip;
-//        this.windchill = windchill;
-//        this.date = date;
-//    }
+    private String conditions;
 
     public Weather() {
     }
 
+    public void applyReadableDate() {
+        Timestamp ts = new Timestamp(this.datetime);
+        SimpleDateFormat jdf = new SimpleDateFormat("d MMMMM yyyy");
+        String date = jdf.format(ts);
+        this.setReadableDate(date);
+    }
 
 }

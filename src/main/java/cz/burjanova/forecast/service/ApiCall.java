@@ -8,7 +8,6 @@ import com.squareup.okhttp.Response;
 import cz.burjanova.forecast.entity.Location;
 import cz.burjanova.forecast.entity.Weather;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -17,9 +16,6 @@ import java.util.List;
 @Slf4j
 @Service
 public class ApiCall {
-
-    @Autowired
-    WeatherService weatherService;
 
     private final OkHttpClient client = new OkHttpClient();
 
@@ -34,7 +30,7 @@ public class ApiCall {
         Location location = rawResponse.getLocation();
         List<Weather> rawWeather = location.getValues();
         for (Weather day : rawWeather) {
-              day.setDate(day.countDate(day.getDatetime()));
+            day.applyReadableDate();
         }
         return location;
     }
@@ -47,12 +43,11 @@ public class ApiCall {
         Location location = rawResponse.getLocation();
         List<Weather> rawWeather = location.getValues();
         for (Weather day : rawWeather) {
-            day.setDate(day.countDate(day.getDatetime()));
+            day.applyReadableDate();
         }
         Location locationDetails = rawResponse.getLocation();
         return locationDetails;
     }
-
 }
 
 

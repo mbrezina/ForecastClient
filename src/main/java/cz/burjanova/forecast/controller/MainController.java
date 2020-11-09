@@ -37,9 +37,7 @@ public class MainController {
 
         return dataHolder;
 
-
     }
-
 
     /*
     @RequestMapping("api/v1/forecastGraph")

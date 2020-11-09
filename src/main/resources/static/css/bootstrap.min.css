@@ -384,6 +384,7 @@ h6, .h6 {
 }
 
 .display-3 {
+    padding-top: 5rem;
     font-size: 4.5rem;
     font-weight: 300;
     line-height: 1.2
@@ -5636,6 +5637,7 @@ a.badge-dark:focus, a.badge-dark.focus {
 .jumbotron {
     padding: 2rem 1rem;
     margin-bottom: 2rem;
+
     background-color: #eee;
     border-radius: 0.3rem
 }
@@ -12340,7 +12342,7 @@ input[type='radio'] {
 
 }
 
-.foto_bitcoin {
+.foto_logo {
     width: 300px;
     border-radius: 10px;
     float: right;
@@ -12349,4 +12351,16 @@ input[type='radio'] {
 
 #myChart {
     margin-bottom: 50px;
+}
+
+.column_icon {
+    float: left;
+    width: 33.33%;
+}
+
+/* Clear floats after the columns */
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
 }

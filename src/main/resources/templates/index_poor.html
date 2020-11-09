@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:text-align="http://www.w3.org/1999/xhtml" lang="cs"
+      xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1>Weather</h1>
+<p>This is a weather page.</p>
+
+<h2 th:text="${address}">předpověď</h2>
+<br>
+
+<h3>Forecast</h3>
+
+<!--<p th:text="${weatherSerie}">předpověď</p>-->
+
+<tr th:each="day: ${dailyWeather}">
+    <td th:text="${day.temp}" />
+    <td th:text="${day.precip}" />
+    <td th:text="${day.readableDate}" />
+
+    <br>
+    <br>
+</tr>
+
+
+</div>
+</body>
+</html>

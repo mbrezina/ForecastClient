@@ -1,7 +1,12 @@
 package cz.burjanova.forecast;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.context.ServletWebServerInitializedEvent;
@@ -14,12 +19,22 @@ import org.springframework.web.servlet.view.DefaultRequestToViewNameTranslator;
 @SpringBootApplication
 public class ForecastClientApplication {
 
+    @Autowired
+    void configureObjectMapper(final ObjectMapper mapper) {
+        mapper.registerModule(new ParameterNamesModule())
+            .registerModule(new Jdk8Module())
+            .registerModule(new JavaTimeModule())
+        ;
+    }
+
+
+
 	public static void main(String[] args) {
 		SpringApplication.run(ForecastClientApplication.class, args);
 	}
 
-    static final Logger logger = LoggerFactory.getLogger(ForecastClientApplication.class);
 
+    static final Logger logger = LoggerFactory.getLogger(ForecastClientApplication.class);
 
     /**
      * Oprava chovani beanu, ktery je zodpovedny za tuto funkcionalitu:
