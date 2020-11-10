@@ -26,36 +26,62 @@
     <div th:insert="fragments/menu :: menu">menu</div>
     <div class="container">
         <div class="jumbotron">
-
-            <h2 class="display-4">Weather Forecast and History </h2>
-
-            <form method="post">
-                <div>
-                    <div class="range_form">
-                        <div class="form-group">
-                            <label for="nameOfPlace">Insert a place and get the forecast and weather history</label>
-                            <input class="form-control" id="nameOfPlace" aria-describedby="emailHelp"
-                                   name="place">
-<!--                            <small id="emailHelp" class="form-text text-muted">Bez jména se formulář neodešle</small>-->
+            <div>
+                <h1 class="display-3">What will be the weather like? </h1>
+                <form method="post">
+                    <div>
+                        <div class="range_form">
+                            <div class="form-group">
+                                <label for="nameOfPlace">Search for your place</label>
+                                <input class="form-control" id="nameOfPlace" name="place">
+                            </div>
                         </div>
+                        <input type="submit" id="getForecast" class="btn btn-primary" value="Get the forecast">
                     </div>
-                </div>
-            </form>
+                </form>
 
-            <h3 class="display-4">Weather forecast for:</h3>
-            <h4 class="display-5" th:text="${address}">Amsterdam</h4>
+                <h3 class="display-4">Weather forecast for <span th:text="${address}">Amsterdam</span></h3>
 
+                <div>
+                    <div th:each="day : ${iconDays}">
+                        <img src="Clear.png" class="column_icon" th:src="@{'images/' + ${day.conditionsIcon}}"
+                             alt="weatherIcon">
+                    </div>
+                    <table style="width: 100%; text-align: center">
+                        <col style="width:33%">
+                        <col style="width:33%">
+                        <col style="width:33%">
+                        <theader>
+                            <td>Today</td>
+                            <td>Tomorrow</td>
+                            <td>Day after tomorrow</td>
+                        </theader>
+                        <tr>
+                            <td th:each="day : ${iconDays}" scope="col">
+                                <span th:text="${day.readableDate}"></span></td>
+                        </tr>
 
-            <div class="row_icon_forecast">
-                <div class="column_icon">
+                        <tr>
+                            <td th:each="day : ${iconDays}" scope="col">
+                                <span th:text="${day.temp}"></span> deg. Celsius</td>
+                        </tr>
 
-                    <img src="cloud.png" th:src="${'images/cloud.png'}" alt="Snow" style="width:100%">
+                        <tr>
+                            <td th:each="day : ${iconDays}" scope="col">
+                                <span th:text="${day.precip}"></span> mm precipitation</td>
+                        </tr>
 
-                    <table th:each="day: ${iconForecast}">
-                        <tr style="text-align:center"><span th:text="${day.readableDate}"></span> </tr><br>
-                        <tr style="text-align:center"><span th:text="${day.temp}"> Celsius degrees</tr><br>
-                        <tr style="text-align:center"><span th:text="${day.precip}"></tr>expected precipitation<br>
-                        
+                        <!--<tr style="text-align:center" th:each="day : ${iconDays}">
+                            <td><span th:text="${day.temp}"> Celsius degrees</span></td>
+                            <td><span th:text="${day[1].temp}"> Celsius degrees</span></td>
+                            <td><span th:text="${day[2].temp}"> Celsius degrees</span></td>
+                        </tr>
+                        <tr style="text-align:center" th:each="day : ${iconDays}">
+                            <td><span th:text="${day.precip}"> Expected precipitation </span></td>
+                            <td><span th:text="${day[1].precip}"> Expected precipitation </span></td>
+                            <td><span th:text="${day[2].precip}"> Expected precipitation </span></td>
+                        </tr>-->
+
                     </table>
 
                 </div>
@@ -115,15 +141,16 @@
                 </table>-->
             </div>
 
-
-            <footer class="paticka">
-                <div>
-                    <p th:insert="fragments/footer :: footer">Footer</p>
-                </div>
-            </footer>
         </div>
+        <footer class="paticka">
+            <div>
+                <p th:insert="fragments/footer :: footer">Footer</p>
+            </div>
+        </footer>
     </div>
+</div>
+</div>
 
-    <script src="js/app.js"></script>
+<script src="js/app.js"></script>
 </body>
 </html>

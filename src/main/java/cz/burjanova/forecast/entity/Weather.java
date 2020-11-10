@@ -17,6 +17,7 @@ public class Weather {
     private Float precip;
     private Float windchill;
     private String conditions;
+    private String conditionsIcon;
 
     public Weather() {
     }
@@ -27,5 +28,39 @@ public class Weather {
         String date = jdf.format(ts);
         this.setReadableDate(date);
     }
+
+    public void attachConditionsIcon() {
+        String conditions = this.getConditions();
+        switch (conditions) {
+            case "Clear":
+                this.setConditionsIcon("Clear.png");
+                break;
+            case "Overcast":
+                this.setConditionsIcon("Overcast.png");
+                break;
+            case "Partially cloudy":
+                this.setConditionsIcon("Overcast.png");
+                break;
+            case "Rain, Overcast":
+                this.setConditionsIcon("Rain.png");
+                break;
+            case "Rain, Partially cloudy":
+                this.setConditionsIcon("Clear.png");
+                break;
+            case "Snow, Partially cloudy":
+                this.setConditionsIcon("Clear.png");
+                break;
+            case "Snow, Overcast":
+                this.setConditionsIcon("Clear.png");
+                break;
+            case "Snow":
+                this.setConditionsIcon("Clear.png");
+                break;
+            case "Rain":
+                this.setConditionsIcon("Rain.png");
+                break;
+        }
+    }
+
 
 }

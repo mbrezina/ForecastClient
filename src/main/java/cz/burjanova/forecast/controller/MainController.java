@@ -26,6 +26,9 @@ public class MainController {
 
     @RequestMapping(value = "", method = RequestMethod.GET)
     public ModelAndView showDefaultLocation() throws IOException {
+        //ModelAndView data = new ModelAndView("index");
+        //return data;
+
         return weatherService.makeWebPage(defaultPlace, "index");
     }
 
@@ -34,8 +37,6 @@ public class MainController {
         String selectedPlace = filledForm.getPlace();
         return weatherService.makeWebPage(selectedPlace, "index");
     }
-
-
 
 
 /*

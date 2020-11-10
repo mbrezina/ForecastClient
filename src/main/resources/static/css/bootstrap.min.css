@@ -343,7 +343,7 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 }
 
 h1, .h1 {
-    font-size: 1.8rem
+    font-size: 1.6rem
 }
 
 h2, .h2 {
@@ -384,17 +384,26 @@ h6, .h6 {
 }
 
 .display-3 {
-    font-size: 4.5rem;
+    padding-top: 2.5rem;
+    font-size: 3.0rem;
     font-weight: 300;
     line-height: 1.2
 }
 
 .display-4 {
-    padding-top: 5rem;
-    font-size: 3.5rem;
+    padding-top: 1rem;
+    font-size: 2.0rem;
     font-weight: 300;
     line-height: 1.2
 }
+
+.display-5 {
+    padding-top: 2rem;
+    font-size: 1.5rem;
+    font-weight: 250;
+    line-height: 1.1
+}
+
 
 hr {
     margin-top: 1rem;
@@ -12354,8 +12363,8 @@ input[type='radio'] {
 }
 
 .column_icon {
-    margin-top: 5rem;
     float: left;
+    height="1000";
     width: 33.33%;
 }
 
