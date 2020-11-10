@@ -60,86 +60,23 @@
                             <td th:each="day : ${iconDays}" scope="col">
                                 <span th:text="${day.readableDate}"></span></td>
                         </tr>
-
                         <tr>
                             <td th:each="day : ${iconDays}" scope="col">
-                                <span th:text="${day.temp}"></span> deg. Celsius</td>
-                        </tr>
-
-                        <tr>
-                            <td th:each="day : ${iconDays}" scope="col">
-                                <span th:text="${day.precip}"></span> mm precipitation</td>
-                        </tr>
-
-                        <!--<tr style="text-align:center" th:each="day : ${iconDays}">
-                            <td><span th:text="${day.temp}"> Celsius degrees</span></td>
-                            <td><span th:text="${day[1].temp}"> Celsius degrees</span></td>
-                            <td><span th:text="${day[2].temp}"> Celsius degrees</span></td>
-                        </tr>
-                        <tr style="text-align:center" th:each="day : ${iconDays}">
-                            <td><span th:text="${day.precip}"> Expected precipitation </span></td>
-                            <td><span th:text="${day[1].precip}"> Expected precipitation </span></td>
-                            <td><span th:text="${day[2].precip}"> Expected precipitation </span></td>
-                        </tr>-->
-
-                    </table>
-
-                </div>
-
-                <!--                <div class="column_icon">
-                                    <img src="rain.png" th:src="${'images/rain.png'}" alt="Forest" style="width:100%">
-                                </div>
-                                <div class="column_icon">
-                                    <img src="sun.png" th:src="${'images/sun.png'}" alt="Mountains" style="width:100%">
-                                </div>
-                            </div>-->
-
-
-                <!--<div class="card border-primary mb-3" style="max-width: 40rem; margin-top: 80px; margin-bottom: 30px;">
-                    <div class="card-header">Today is: <span th:text="${dailyWeather[0].readableDate}"> 1.1.1970</span></div>
-                    <div class="card-body">
-
-
-                        <p class="card-text">Weather Forecast<span
-                            th:text="${actualRate.last}">for free</span>CZK</p>
-                        <p class="card-text">The rate change since yesterday last trade is <span
-                            th:text="${actualRate.change}"> -5%</span> %</p>
-
-                        <div class="form-group">
-                            <label for="locationToLookUp">Jaké je jeho jméno?</label>
-                            <input class="form-control" id="locationToLookUp" aria-describedby="fieldHelp"
-                                   name="insertedLocation">
-                            <small id="fieldHelp" class="form-text text-muted">Bez jména se formulář neodešle</small>
-                        </div>
-
-
-                    </div>
-                </div>
-
-                <canvas id="myChart" width="400" height="400">
-                </canvas>
-
-                <table class="table table-hover table-bordered">
-                    <tr>
-                    <tr class="table-primary">
-                        <th>Date
-                        </th>
-                        <th>Currency Rate CZK/BitCoin
-                        </th>
-                        <th>Change from the previous day
-                        </th>
-                    </tr>
-                    <div th:each="oldRate : ${rateHistory}">
-                        <tr>
-                            <td th:text="${oldRate.date}" class="table-secondary"></td>
-                            <td class="table-secondary"><span th:text="${oldRate.last}"></span> CZK for 1
-                                BitCoin
+                                <span th:text="${day.temp}"></span> deg. Celsius
                             </td>
-                            <td class="table-secondary"><span th:text="${oldRate.change}"></span> %</td>
                         </tr>
-                    </div>
-                </table>-->
+                        <tr>
+                            <td th:each="day : ${iconDays}" scope="col">
+                                <span th:text="${day.precip}"></span> mm precipitation
+                            </td>
+                        </tr>
+                    </table>
+                </div>
             </div>
+
+            <canvas id="myChart" width="400" height="400">
+            </canvas>
+
 
         </div>
         <footer class="paticka">

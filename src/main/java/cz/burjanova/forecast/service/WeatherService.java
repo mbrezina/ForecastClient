@@ -1,5 +1,6 @@
 package cz.burjanova.forecast.service;
 
+import cz.burjanova.forecast.entity.ApiUrl;
 import cz.burjanova.forecast.entity.Location;
 import cz.burjanova.forecast.entity.Weather;
 import lombok.extern.slf4j.Slf4j;
@@ -15,46 +16,45 @@ import java.util.List;
 @Service
 public class WeatherService {
 
-    @Autowired
-    private ApiCall call;
-
     @Value("${weather.api.key}")
-    String key;
+    private String key;
 
-    public Location makeForecast(String place) throws IOException {
+    @Value("${weather.api.place}")
+    private String defaultPlace;
 
-        String baseURL = "https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/weatherdata/";
-        String callType = "forecast";
-        String keyQuery = "key=" + key;
-        String placeQuery = "locations=" + place;
+    @Autowired
+    private ApiCall apiCall;
 
-        //String url =
-
-        Location location = call.doGetRequest("https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/weatherdata/" +
-            "forecast?aggregateHours=24&combinationMethod=aggregate&contentType=json&unitGroup=metric&locationMode=single&" +
-            "key=D2FFG9NXUC1WNU4138HL7A868&dataElements=default&locations=Paris");
-
-        /*
-public Tea(String name, Integer milk, Boolean herbs, Integer sugar, Integer teaPowder) {
-            this.name = name;
-            this.milk = milk == null ? 0 : milk.intValue();
-            this.herbs = herbs == null ? false : herbs.booleanValue();
-            this.sugar = sugar == null ? 0 : sugar.intValue();
-            this.teaPowder = teaPowder == null ? DEFAULT_TEA_POWDER : teaPowder.intValue();
-        }
-
-         */
-
-    /*Location forecast = call.doGetRequest("https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/weatherdata/" +
-        "forecast?aggregateHours=24&combinationMethod=aggregate&contentType=json&unitGroup=metric&locationMode=single&" +
-        "key=D2FFG9NXUC1WNU4138HL7A868&dataElements=default&locations=Paris");
-     */
-        return location;
-    }
+//
+//    public Location makeForecast() throws IOException {
+//
+//        Location location = call.doGetRequest(url);
+//
+////        Location location = call.doGetRequest("https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/weatherdata/" +
+////            "forecast?aggregateHours=24&combinationMethod=aggregate&contentType=json&unitGroup=metric&locationMode=single&" +
+////            "key=D2FFG9NXUC1WNU4138HL7A868&dataElements=default&locations=Paris");
+//
+//
+//    /*Location forecast = call.doGetRequest("https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/weatherdata/" +
+//        "forecast?aggregateHours=24&combinationMethod=aggregate&contentType=json&unitGroup=metric&locationMode=single&" +
+//        "key=D2FFG9NXUC1WNU4138HL7A868&dataElements=default&locations=Paris");
+//     */
+//        return location;
+//    }
 
     public ModelAndView makeWebPage(String place, String nameOfWebView) throws IOException {
         ModelAndView dataHolder = new ModelAndView(nameOfWebView);
-        Location forecast = this.makeForecast(place);
+
+        if (place == null) {
+            place = defaultPlace;
+        }
+        ApiUrl forecastUrl = new ApiUrl("forecast", place, key);
+        ApiUrl historyUrl = new ApiUrl("history", place, key);
+
+        String uuurl = forecastUrl.composeApiUrl();
+
+        Location forecast = apiCall.doGetRequest(forecastUrl.composeApiUrl());
+        //Location history = call.doGetRequest(historyUrl.composeApiUrl());
 
         String address = forecast.getAddress();
         dataHolder.addObject("address", address);

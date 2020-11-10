@@ -21,6 +21,7 @@ public class MainController {
     @Autowired
     WeatherService weatherService;
 
+
     @Value("${weather.api.place}")
     private String defaultPlace;
 
