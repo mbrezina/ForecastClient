@@ -37,6 +37,12 @@ public class MainController {
         return weatherService.makeWebPage(selectedPlace, "index");
     }
 
+    @RequestMapping(value = "favourite", method = RequestMethod.GET)
+    public ModelAndView showFavouriteLocation() throws IOException {
+        //ModelAndView data = new ModelAndView("index");
+        //return data;
+        return weatherService.makeWebPage(defaultPlace, "index");
+    }
 
 /*
 

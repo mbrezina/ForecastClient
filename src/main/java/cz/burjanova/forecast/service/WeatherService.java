@@ -39,7 +39,19 @@ public class WeatherService {
             dataHolder.addObject("message", "The place " + place + " was not found, try another place or check typos");
             forecastUrl = new ApiUrl("forecast", defaultPlace, key);
            forecast = apiCall.doGetRequest(forecastUrl.composeApiUrl());
-         }
+         } else if (forecast.getName().equals("no location inserted")) {
+            log.debug("no place inserted into search field");
+            dataHolder.addObject("message", "You have not inserted any place, fill the search field to see the forecast");
+            forecastUrl = new ApiUrl("forecast", defaultPlace, key);
+            forecast = apiCall.doGetRequest(forecastUrl.composeApiUrl());
+        }  else if (forecast.getName().equals("the API key is not valid")) {
+            log.info("**********************************");
+            log.info("NO VALID API KEY");
+            log.info("**********************************");
+            forecastUrl = new ApiUrl("forecast", defaultPlace, key);
+            forecast = apiCall.doGetRequest(forecastUrl.composeApiUrl());
+        }
+
         //Location history = call.doGetRequest(historyUrl.composeApiUrl());
 
         //String address = forecast.getAddress();
