@@ -32,26 +32,30 @@
                     <div>
                         <div class="range_form">
                             <div class="form-group">
-                                <label for="nameOfPlace">Search for your place</label>
-                                <input class="form-control" id="nameOfPlace" name="place">
+                                <label for="name-of-place">Search for your place</label>
+                                <input class="form-control" id="name-of-place" name="place">
+                                <div class="text-danger" th:if="${message != null}" th:text="${message}">
+                                    Everything is working fine.
+                                </div>
                             </div>
                         </div>
-                        <input type="submit" id="getForecast" class="btn btn-primary" value="Get the forecast">
+                        <input type="submit" id="getForecast" class="btn btn-warning" value="Get the forecast">
                     </div>
                 </form>
 
-                <h3 class="display-4">Weather forecast for <span th:text="${address}">Amsterdam</span></h3>
+                <h3 class="display-4">Weather forecast for <span th:text="${name}">Amsterdam</span></h3>
+                <!--<h4 class="display-5">Weather forecast for <span th:text="${address}">Amsterdam, Noord Holland</span></h4>-->
 
                 <div>
                     <div th:each="day : ${iconDays}">
-                        <img src="Clear.png" class="column_icon" th:src="@{'images/' + ${day.conditionsIcon}}"
+                        <img src="Clear.png" class="column-icon" th:src="@{'images/' + ${day.conditionsIcon}}"
                              alt="weatherIcon">
                     </div>
                     <table style="width: 100%; text-align: center">
                         <col style="width:33%">
                         <col style="width:33%">
                         <col style="width:33%">
-                        <theader>
+                        <theader style="line-height: 2.0rem">
                             <td>Today</td>
                             <td>Tomorrow</td>
                             <td>Day after tomorrow</td>

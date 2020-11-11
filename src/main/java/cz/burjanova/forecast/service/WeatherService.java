@@ -25,39 +25,28 @@ public class WeatherService {
     @Autowired
     private ApiCall apiCall;
 
-//
-//    public Location makeForecast() throws IOException {
-//
-//        Location location = call.doGetRequest(url);
-//
-////        Location location = call.doGetRequest("https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/weatherdata/" +
-////            "forecast?aggregateHours=24&combinationMethod=aggregate&contentType=json&unitGroup=metric&locationMode=single&" +
-////            "key=D2FFG9NXUC1WNU4138HL7A868&dataElements=default&locations=Paris");
-//
-//
-//    /*Location forecast = call.doGetRequest("https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/weatherdata/" +
-//        "forecast?aggregateHours=24&combinationMethod=aggregate&contentType=json&unitGroup=metric&locationMode=single&" +
-//        "key=D2FFG9NXUC1WNU4138HL7A868&dataElements=default&locations=Paris");
-//     */
-//        return location;
-//    }
-
     public ModelAndView makeWebPage(String place, String nameOfWebView) throws IOException {
         ModelAndView dataHolder = new ModelAndView(nameOfWebView);
 
-        if (place == null) {
-            place = defaultPlace;
-        }
         ApiUrl forecastUrl = new ApiUrl("forecast", place, key);
         ApiUrl historyUrl = new ApiUrl("history", place, key);
 
-        String uuurl = forecastUrl.composeApiUrl();
-
         Location forecast = apiCall.doGetRequest(forecastUrl.composeApiUrl());
+
+        if (forecast.getName().equals("not a valid place")) {
+            log.info(forecast.getName());
+            log.debug("inserted place is not valid");
+            dataHolder.addObject("message", "The place " + place + " was not found, try another place or check typos");
+            forecastUrl = new ApiUrl("forecast", defaultPlace, key);
+           forecast = apiCall.doGetRequest(forecastUrl.composeApiUrl());
+         }
         //Location history = call.doGetRequest(historyUrl.composeApiUrl());
 
-        String address = forecast.getAddress();
-        dataHolder.addObject("address", address);
+        //String address = forecast.getAddress();
+        String name = forecast.getName();
+
+        dataHolder.addObject("name", name);
+        //dataHolder.addObject("address", address);
 
         List<Weather> dailyWeather = forecast.getValues();
         dataHolder.addObject("dailyWeather", dailyWeather);

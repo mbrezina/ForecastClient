@@ -10,5 +10,7 @@ public class Location {
     private List<Weather> values;
     private String address;
     private String id;
+    private String name;
+
 
 }

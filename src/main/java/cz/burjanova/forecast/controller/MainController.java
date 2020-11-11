@@ -21,7 +21,6 @@ public class MainController {
     @Autowired
     WeatherService weatherService;
 
-
     @Value("${weather.api.place}")
     private String defaultPlace;
 
@@ -29,7 +28,6 @@ public class MainController {
     public ModelAndView showDefaultLocation() throws IOException {
         //ModelAndView data = new ModelAndView("index");
         //return data;
-
         return weatherService.makeWebPage(defaultPlace, "index");
     }
 
