@@ -1,19 +1,21 @@
 package cz.burjanova.forecast.entity;
 
+
 import lombok.Data;
 
 import javax.persistence.*;
 
-@Entity
 @Data
-@Table(name = "user_location")
-public class UserLocation {
+@Entity
+@Table(name = "customer")
+public class Customer {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-
+    private Long id;
     private String sub;
-    private String location;
+    private String name;
+    private String email;
 
 }
 

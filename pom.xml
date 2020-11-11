@@ -87,7 +87,7 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-		-<dependency>
+		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-test</artifactId>
 			<scope>test</scope>
@@ -98,6 +98,7 @@
             <artifactId>spring-webmvc</artifactId>
             <version>5.2.7.RELEASE</version>
         </dependency>
+
     </dependencies>
 
 	<build>
@@ -124,5 +125,4 @@
             </plugin>
         </plugins>
 	</build>
-
 </project>

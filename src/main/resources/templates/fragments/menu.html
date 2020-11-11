@@ -3,30 +3,39 @@
 <body>
 
 
-    <div th:fragment="menu">
-        <div class="navbar navbar-expand-lg fixed-top navbar-dark bg-gradient-primary">
-            <div class="container">
+<div th:fragment="menu">
+    <div class="navbar navbar-expand-lg fixed-top navbar-dark bg-gradient-primary">
+        <div class="container">
+            <a class="navbar-brand">Weather Forecast by SkyCast</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
+                    aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
 
-                <a class="navbar-brand">Weather Forecast by SkyCast</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
-                        aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                    </li>
+                    <li class="nav-item">
+
+                        <a class="nav-link" th:if="${email == null}" th:text="${'Login to get personalized results'}"
+                           th:href="@{'star/'}" href="https://www.linkedin.com/in/burjanova/">Login</a>
+
+                        <!--<a class="nav-link" th:href="@{'star/'}" href="https://www.linkedin.com/in/burjanova/">Login to
+                            get personalized results</a>-->
+
+                        <div class="nav-link" th:if="${email != null}" th:text="${email}">
+
+                        </div>
 
 
-                <div class="collapse navbar-collapse" id="navbarResponsive">
-                    <ul class="navbar-nav">
-                        <li class="nav-item">
-                           <!-- <a class="nav-link" href="https://st3.czechitas.cikanek.net/ukol01/">Autorka</a>-->
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="https://www.linkedin.com/in/burjanova/">Login to get personalized results</a>
-                        </li>
-                    </ul>
-                </div>
+                        <!--<a class="nav-link" href="https://www.linkedin.com/in/burjanova/">Login to get personalized results</a>-->
+                    </li>
+                </ul>
             </div>
         </div>
     </div>
+</div>
 
 
 </body>
