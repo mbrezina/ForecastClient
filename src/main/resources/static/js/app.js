@@ -2,26 +2,30 @@
 
 let graphArea = document.querySelector("#graph")
 
-function loadData() {
+async function loadData() {
     var httpKlient = new XMLHttpRequest();
+    console.log("jsem taddddyyy");
     httpKlient.onload = makeGraph;
     httpKlient.onerror = errorMessage;
-    httpKlient.open("GET", "api/v1/dataForGraph", true);
+    httpKlient.open("GET", "/", true);
     httpKlient.send();
-}
 
-function makeGraph() {
+
+}
+async function makeGraph() {
     const xlabels = [];
     const yrates = [];
-    var rates = JSON.parse(this.response);
+
+    var temperatureObjectList = JSON.parse(temperatureSerie.replace(/&quot;/g,'"'));
+
     getDataInGraph();
     ChartIt();
 
     async function getDataInGraph() {
-        console.log("jsem tady")
-        for (let i = 0; i < 7; i++) {
-            xlabels.push(rates[i].date);
-            yrates.push(rates[i].last);
+
+        for (let i = 0; i < temperatureObjectList.length; i++) {
+            xlabels.push(temperatureObjectList[i].day);
+            yrates.push(temperatureObjectList[i].temperature);
         }
         xlabels.reverse();
         yrates.reverse();
@@ -34,7 +38,7 @@ function makeGraph() {
             data: {
                 labels: xlabels,
                 datasets: [{
-                    label: 'Bit Coin Rate',
+                    label: 'Temperature Overview',
                     fill: false,
                     data: yrates,
                     backgroundColor: 'rgba(231,22,15,0.71)',
@@ -51,8 +55,8 @@ function makeGraph() {
                     },
                     tooltips: {
                         enabled: true,
-                        fontSize: 20,
-                        titleFontSize: 20
+                        fontSize: 40,
+                        titleFontSize: 40
                     }
                 }
         });
