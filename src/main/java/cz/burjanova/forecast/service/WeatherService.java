@@ -31,71 +31,61 @@ public class WeatherService {
     @Autowired
     private ApiCall apiCall;
 
-    public ModelAndView makeWebPage(String place, String nameOfWebView) throws IOException {
-        ModelAndView dataHolder = new ModelAndView(nameOfWebView);
-
+    public Location makeForecastCall(String place) throws IOException {
         ApiUrl forecastUrl = new ApiUrl("forecast", place, key);
+        return apiCall.doGetRequest(forecastUrl.composeForecastApiUrl());
+    }
 
+    public Location makeHistoryCall(String place) throws IOException {
         ApiUrl historyUrl = new ApiUrl("history", place, key, prepareTimeFrameQuery());
+        return apiCall.doGetRequest(historyUrl.composeHistoryApiUrl());
+    }
 
-        Location forecast = apiCall.doGetRequest(forecastUrl.composeForecastApiUrl());
-        Location history = apiCall.doGetRequest(historyUrl.composeHistoryApiUrl());
+    public ModelAndView makeWebPage(String place, String nameOfWebView) throws IOException {   //basic home page
+        ModelAndView dataHolder = new ModelAndView(nameOfWebView);
+        Location forecast = makeForecastCall(place);
 
         if (forecast.getName().equals("not a valid place")) {
-            log.info(forecast.getName());
-            log.debug("inserted place is not valid");
+            //log.info(forecast.getName());
+            log.info("inserted place is not valid");
             dataHolder.addObject("message", "The place " + place + " was not found, try another place or check typos");
-            forecastUrl = new ApiUrl("forecast", defaultPlace, key);
-            forecast = apiCall.doGetRequest(forecastUrl.composeForecastApiUrl());
+            forecast = makeForecastCall(defaultPlace);
+
         } else if (forecast.getName().equals("no location inserted")) {
-            log.debug("no place inserted into search field");
+            log.info("no place inserted into search field");
             dataHolder.addObject("message", "You have not inserted any place, fill the search field to see the forecast");
-            forecastUrl = new ApiUrl("forecast", defaultPlace, key);
-            forecast = apiCall.doGetRequest(forecastUrl.composeForecastApiUrl());
+            forecast = makeForecastCall(defaultPlace);
+
         } else if (forecast.getName().equals("the API key is not valid")) {
             log.info("**********************************");
             log.info("NO VALID API KEY");
             log.info("**********************************");
-            forecastUrl = new ApiUrl("forecast", defaultPlace, key);
-            forecast = apiCall.doGetRequest(forecastUrl.composeForecastApiUrl());
+            forecast = makeForecastCall(defaultPlace);
         }
 
-        //String address = forecast.getAddress();
-        String nameOfPlace = forecast.getName();
-
-        dataHolder.addObject("nameOfPlace", nameOfPlace);
-        //dataHolder.addObject("address", address);
-
-        List<Weather> dailyWeather = forecast.getValues();
-        dataHolder.addObject("dailyWeather", dailyWeather);
-
-        List<Weather> iconDays = dailyWeather.subList(0, 2);
-
-        for (Weather day : iconDays) {
-            day.attachConditionsIcon();
-            log.debug(day.getConditionsIcon());
-        }
-
-        // 3 days of the forecast with icons:
-        dataHolder.addObject("iconDays", iconDays);
-
-        dataHolder.addObject("temperatureSerie", getTemperatureTimeSerie(place));
-        log.info(getTemperatureTimeSerie(place));
-
-        log.debug("size daily weather: " + String.valueOf(dailyWeather.size()));
-        log.debug("size icon forecast: " + String.valueOf(iconDays.size()));
+        dataHolder.addObject("nameOfPlace", forecast.getName());
+        dataHolder.addObject("iconDays", getIconDays(forecast.getValues()));
+        dataHolder.addObject("temperatureSerie", getTemperatureTimeSerie(place, forecast));
+        log.debug(getTemperatureTimeSerie(place, forecast));
+        log.debug("size daily weather: " + forecast.getValues().size());
 
         return dataHolder;
     }
 
-    public String getTemperatureTimeSerie(String place) throws IOException {
+    public List<Weather> getIconDays(List<Weather> dailyWeather) {
+        List<Weather> iconDays = dailyWeather.subList(0, 2);
+        for (Weather day : iconDays) {
+            day.attachConditionsIcon();
+            log.debug(day.getConditionsIcon());
+        }
+        return iconDays;
+    }
+
+
+    public String getTemperatureTimeSerie(String place, Location forecast) throws IOException {
         List<GraphTemperature> listForGraph = new ArrayList<>();
 
-        ApiUrl forecastUrl = new ApiUrl("forecast", place, key);
-        ApiUrl historyUrl = new ApiUrl("history", place, key, prepareTimeFrameQuery());
-
-        Location forecast = apiCall.doGetRequest(forecastUrl.composeForecastApiUrl());
-        Location history = apiCall.doGetRequest(historyUrl.composeHistoryApiUrl());
+        Location history = makeHistoryCall(place);
 
         for (Weather day : history.getValues()) {
             day.applyJavaScriptDate();
@@ -131,12 +121,5 @@ public class WeatherService {
 
     }
 
-
-    /*
-    Location history = call.doGetRequest("https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/" +
-        "weatherdata/history?aggregateHours=24&combinationMethod=aggregate&" +
-        "startDateTime=2020-11-01T00%3A00%3A00&endDateTime=2020-11-08T00%3A00%3A00&maxStations=-1&maxDistance=-1&" +
-        "contentType=json&unitGroup=metric&locationMode=single&key=D2FFG9NXUC1WNU4138HL7A868&dataElements=default&locations=blatn%C3%A1");
-     */
 
 }

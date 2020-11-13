@@ -66,6 +66,7 @@ function drawChart(data) {
 
     g.append("g")
         .attr("transform", "translate(0," + height + ")")
+        .style("font", "20px arial")
         .call(d3.axisBottom(x))
         .select(".domain")
         .remove();
@@ -73,9 +74,10 @@ function drawChart(data) {
     g.append("g")
         .call(d3.axisLeft(y))
         .append("text")
+        .style("font", "24px arial")
         .attr("fill", "#000")
         .attr("transform", "rotate(-90)")
-        .attr("y", 6)
+        .attr("y", 1)
         .attr("dy", "0.71em")
         .attr("text-anchor", "end")
         .text("Temperature");
@@ -86,7 +88,7 @@ function drawChart(data) {
         .attr("stroke", "steelblue")
         .attr("stroke-linejoin", "round")
         .attr("stroke-linecap", "round")
-        .attr("stroke-width", 1.5)
+        .attr("stroke-width", 2.5)
         .attr("d", line);
 
 

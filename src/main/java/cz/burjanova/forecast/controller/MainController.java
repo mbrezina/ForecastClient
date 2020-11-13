@@ -33,8 +33,6 @@ public class MainController {
     @Value("${weather.api.place}")
     private String defaultPlace;
 
-
-
     @RequestMapping(value = "", method = RequestMethod.GET)
     public ModelAndView showDefaultLocation() throws IOException {
         //ModelAndView data = new ModelAndView("index");
