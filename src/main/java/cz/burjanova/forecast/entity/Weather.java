@@ -12,6 +12,7 @@ public class Weather {
 
     private String datetimeStr;
     private String readableDate;
+    private String javaScriptDate;
     private Float temp;
     private Long datetime;
     private Float precip;
@@ -27,6 +28,13 @@ public class Weather {
         SimpleDateFormat jdf = new SimpleDateFormat("d MMMMM yyyy");
         String date = jdf.format(ts);
         this.setReadableDate(date);
+    }
+
+    public void applyJavaScriptDate() {
+        Timestamp ts = new Timestamp(this.datetime);
+        SimpleDateFormat jdf = new SimpleDateFormat("yyyy, MM, dd");
+        String date = jdf.format(ts);
+        this.setJavaScriptDate(date);
     }
 
     public void attachConditionsIcon() {

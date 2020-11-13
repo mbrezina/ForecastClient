@@ -36,10 +36,10 @@ public class WeatherService {
 
         ApiUrl forecastUrl = new ApiUrl("forecast", place, key);
 
-        //ApiUrl historyUrl = new ApiUrl("history", place, key, prepareTimeFrameQuery());
+        ApiUrl historyUrl = new ApiUrl("history", place, key, prepareTimeFrameQuery());
 
         Location forecast = apiCall.doGetRequest(forecastUrl.composeForecastApiUrl());
-        //Location history = apiCall.doGetRequest(historyUrl.composeHistoryApiUrl());
+        Location history = apiCall.doGetRequest(historyUrl.composeHistoryApiUrl());
 
         if (forecast.getName().equals("not a valid place")) {
             log.info(forecast.getName());
@@ -59,8 +59,6 @@ public class WeatherService {
             forecastUrl = new ApiUrl("forecast", defaultPlace, key);
             forecast = apiCall.doGetRequest(forecastUrl.composeForecastApiUrl());
         }
-
-        //Location history = call.doGetRequest(historyUrl.composeApiUrl());
 
         //String address = forecast.getAddress();
         String nameOfPlace = forecast.getName();
@@ -100,11 +98,15 @@ public class WeatherService {
         Location history = apiCall.doGetRequest(historyUrl.composeHistoryApiUrl());
 
         for (Weather day : history.getValues()) {
-            listForGraph.add(new GraphTemperature(day.getTemp(), day.getReadableDate()));
+            day.applyJavaScriptDate();
+            //listForGraph.add(new GraphTemperature(day.getTemp(), day.getReadableDate()));
+            listForGraph.add(new GraphTemperature(day.getTemp(), day.getJavaScriptDate()));
         }
 
         for (Weather day : forecast.getValues()) {
-            listForGraph.add(new GraphTemperature(day.getTemp(), day.getReadableDate()));
+            day.applyJavaScriptDate();
+            //listForGraph.add(new GraphTemperature(day.getTemp(), day.getReadableDate()));
+            listForGraph.add(new GraphTemperature(day.getTemp(), day.getJavaScriptDate()));
         }
 
         ObjectMapper objectMapper = new ObjectMapper();
