@@ -66,6 +66,8 @@ public class WeatherService {
         dataHolder.addObject("nameOfPlace", forecast.getName());
         dataHolder.addObject("iconDays", getIconDays(forecast.getValues()));
         dataHolder.addObject("temperatureSerie", getTemperatureTimeSerie(place, forecast));
+        dataHolder.addObject("authenticated", "false");
+
         log.debug(getTemperatureTimeSerie(place, forecast));
         log.debug("size daily weather: " + forecast.getValues().size());
 
@@ -110,6 +112,8 @@ public class WeatherService {
 
         dataHolder.addObject("starLocationList", starLocationList);
         dataHolder.addObject("listStarForecast", listStarForecast);
+        dataHolder.addObject("authenticated", "true");
+
         return dataHolder;
     }
 

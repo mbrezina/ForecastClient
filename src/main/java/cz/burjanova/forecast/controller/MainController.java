@@ -61,13 +61,17 @@ public class MainController {
         String subCode = oauth2User.getAttributes().get("sub").toString();
         String email = oauth2User.getAttributes().get("email").toString();
 
-        weatherService.saveNewFavouritePlace(newFavouritePlace, subCode, email);
+        ModelAndView dataHolder;
 
-        ModelAndView dataHolder = weatherService.makeStarPage("star", subCode, email);
+        if (newFavouritePlace.isEmpty()) {
+            dataHolder = weatherService.makeStarPage("star", subCode, email);
+            dataHolder.addObject("message", "You have not filled any place, try again");
+        } else {
+            weatherService.saveNewFavouritePlace(newFavouritePlace, subCode, email);
+            dataHolder = weatherService.makeStarPage("star", subCode, email);
+        }
         return dataHolder;
     }
-
-
 }
 
 

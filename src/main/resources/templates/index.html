@@ -20,8 +20,6 @@
 
 </head>
 
-<!--<body onload="loadData();">-->
-
 <div>
     <div th:insert="fragments/menu :: menu">menu</div>
     <div class="container">
@@ -44,7 +42,6 @@
                 </form>
 
                 <h3 class="display-4">Weather forecast for <span th:text="${nameOfPlace}">Amsterdam</span></h3>
-                <!--<h4 class="display-5">Weather forecast for <span th:text="${address}">Amsterdam, Noord Holland</span></h4>-->
 
                 <div>
                     <div th:each="day : ${iconDays}">
@@ -56,9 +53,9 @@
                         <col style="width:33%">
                         <col style="width:33%">
                         <theader style="line-height: 2.0rem">
-                            <td>Today</td>
-                            <td>Tomorrow</td>
-                            <td>Day after tomorrow</td>
+                            <td style="font-weight: bold">Today</td>
+                            <td style="font-weight: bold">Tomorrow</td>
+                            <td style="font-weight: bold">Day after tomorrow</td>
                         </theader>
                         <tr>
                             <td th:each="day : ${iconDays}" scope="col">
@@ -78,12 +75,10 @@
                 </div>
             </div>
 
-            <div id="chartGraph">
-            <svg class="line-chart"></svg>
-            </div>
 
-            <!--<canvas id="myChart" width="400" height="400">
-            </canvas>-->
+            <div id="chartGraph" style="padding-top: 30px">
+                <svg class="line-chart"></svg>
+            </div>
 
         </div>
         <footer class="paticka">

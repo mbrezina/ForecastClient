@@ -50,22 +50,22 @@ public class Weather {
                 this.setConditionsIcon("Overcast.png");
                 break;
             case "Rain, Overcast":
-                this.setConditionsIcon("Rain.png");
+                this.setConditionsIcon("Rain_overcast.png");
                 break;
             case "Rain, Partially cloudy":
-                this.setConditionsIcon("Clear.png");
+                this.setConditionsIcon("Partially_cloudy.png");
                 break;
             case "Snow, Partially cloudy":
                 this.setConditionsIcon("Clear.png");
                 break;
             case "Snow, Overcast":
-                this.setConditionsIcon("Clear.png");
+                this.setConditionsIcon("Snow.png");
                 break;
             case "Snow":
-                this.setConditionsIcon("Clear.png");
+                this.setConditionsIcon("Snow.png");
                 break;
             case "Rain":
-                this.setConditionsIcon("Rain.png");
+                this.setConditionsIcon("Rain_overcast.png");
                 break;
         }
     }

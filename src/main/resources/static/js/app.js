@@ -5,16 +5,9 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
     var array = [];
         for (let i = 0; i < temperatureObjectList.length; i++) {
-        var date_try = temperatureObjectList[i].day
-            console.log(date_try)
-        var date_new = new Date(date_try)
-        console.log(date_new)
-
+        var date_new = new Date(temperatureObjectList[i].day)
         var temp = Number(temperatureObjectList[i].temperature).valueOf()
-        console.log(temp)
         array.push({
-            //date: temperatureObjectList[i].day, value: +temperatureObjectList[i].temperature
-            //date: new Date(temperatureObjectList[i].day), value: +temperatureObjectList[i].temperature
             date: date_new, value: temp
         })
     }
@@ -27,10 +20,7 @@ function drawChart(data) {
     var chartDiv = document.getElementById("chartGraph");
 
     var svgWidth = chartDiv.clientWidth;
-    //var svgHeight = chartDiv.clientHeight;
     var svgHeight = 500;
-
-    //var svgWidth = 600, svgHeight = 400;
 
     var margin = {top: 20, right: 20, bottom: 30, left: 40};
     var width = svgWidth - margin.left - margin.right;
@@ -90,7 +80,6 @@ function drawChart(data) {
         .attr("stroke-linecap", "round")
         .attr("stroke-width", 2.5)
         .attr("d", line);
-
 
 }
 
