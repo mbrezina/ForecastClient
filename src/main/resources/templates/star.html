@@ -9,7 +9,7 @@
     <meta name="robots" content="index, follow"/>
     <meta name="keywords" content="java, web"/>
     <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
-    <title>Weather Forecast</title>
+    <title>Weather Forecast at My Favourite Places</title>
     <link
         href="https://fonts.googleapis.com/css?family=Playfair+Display:400,400i,700,700i|Raleway:400,400i,700,700i&amp;subset=latin-ext"
         rel="stylesheet"/>
@@ -26,80 +26,73 @@
     <div class="container">
         <div class="jumbotron">
             <div>
-                <h1 class="display-3">STARRRRRR What will be the weather like? </h1>
+                <h1 class="display-3">What will be the weather like? </h1>
                 <form method="post">
                     <div>
                         <div class="range_form">
                             <div class="form-group">
-                                <label for="name-of-place">Search for your place</label>
+                                <label for="name-of-place">My favourite places</label>
                                 <input class="form-control" id="name-of-place" name="place">
                                 <div class="text-danger" th:if="${message != null}" th:text="${message}">
                                     Everything is working fine.
                                 </div>
                             </div>
                         </div>
-                        <input type="submit" id="getForecast" class="btn btn-warning" value="Get the forecast">
+                        <input type="submit" id="saveFavouritePlace" class="btn btn-warning" name="saveFavouritePlace"
+                               value="Save the place to the list of favourite places">
                     </div>
                 </form>
-
+                <br>
                 <form th:action="@{/logout}" method="post">
                     <input type="submit" value="Sign Out" class="btn btn-danger"/>
                 </form>
+                <br>
 
 
-                <h3 class="display-4">Weather forecast for <span th:text="${nameOfPlace}">Amsterdam</span></h3>
-                <!--<h4 class="display-5">Weather forecast for <span th:text="${address}">Amsterdam, Noord Holland</span></h4>-->
-
-                <div>
-                    <div th:each="day : ${iconDays}">
-                        <img src="Clear.png" class="column-icon" th:src="@{'/images/' + ${day.conditionsIcon}}"
-                             alt="weatherIcon">
+                <div th:each="item : ${listStarForecast}">
+                    <h3 class="display-4">Weather forecast for <span th:text="${item.key}">Amsterdam</span></h3>
+                    <div>
+                        <div th:each="day : ${item.value}">
+                            <img src="Clear.png" class="column-icon"
+                                 th:src="@{'/images/' + ${day.conditionsIcon}}"
+                                 alt="weatherIcon">
+                        </div>
+                        <table style="width: 100%; text-align: center">
+                            <col style="width:33%">
+                            <col style="width:33%">
+                            <col style="width:33%">
+                            <theader style="line-height: 2.0rem">
+                                <td>Today</td>
+                                <td>Tomorrow</td>
+                                <td>Day after tomorrow</td>
+                            </theader>
+                            <tr>
+                                <td th:each="day : ${item.value}" scope="col">
+                                    <span th:text="${day.readableDate}"></span></td>
+                            </tr>
+                            <tr>
+                                <td th:each="day : ${item.value}" scope="col">
+                                    <span th:text="${day.temp}"></span> deg. Celsius
+                                </td>
+                            </tr>
+                            <tr>
+                                <td th:each="day : ${item.value}" scope="col">
+                                    <span th:text="${day.precip}"></span> mm precipitation
+                                </td>
+                            </tr>
+                            <br>
+                        </table>
                     </div>
-                    <table style="width: 100%; text-align: center">
-                        <col style="width:33%">
-                        <col style="width:33%">
-                        <col style="width:33%">
-                        <theader style="line-height: 2.0rem">
-                            <td>Today</td>
-                            <td>Tomorrow</td>
-                            <td>Day after tomorrow</td>
-                        </theader>
-                        <tr>
-                            <td th:each="day : ${iconDays}" scope="col">
-                                <span th:text="${day.readableDate}"></span></td>
-                        </tr>
-                        <tr>
-                            <td th:each="day : ${iconDays}" scope="col">
-                                <span th:text="${day.temp}"></span> deg. Celsius
-                            </td>
-                        </tr>
-                        <tr>
-                            <td th:each="day : ${iconDays}" scope="col">
-                                <span th:text="${day.precip}"></span> mm precipitation
-                            </td>
-                        </tr>
-                    </table>
                 </div>
-
-
+                <br>
             </div>
-
-            <canvas id="myChart" width="400" height="400">
-            </canvas>
-
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
+            <footer class="paticka">
+                <div>
+                    <p th:insert="fragments/footer :: footer">Footer</p>
+                </div>
+            </footer>
         </div>
-        <footer class="paticka">
-            <div>
-                <p th:insert="fragments/footer :: footer">Footer</p>
-            </div>
-        </footer>
     </div>
 </div>
-
 </body>
 </html>

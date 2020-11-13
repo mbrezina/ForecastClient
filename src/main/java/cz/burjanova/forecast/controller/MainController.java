@@ -2,8 +2,8 @@ package cz.burjanova.forecast.controller;
 
 
 import cz.burjanova.forecast.entity.PlaceForm;
-import cz.burjanova.forecast.service.CustomerService;
-import cz.burjanova.forecast.service.StarLocationService;
+
+
 import cz.burjanova.forecast.service.WeatherService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,12 +24,6 @@ public class MainController {
     @Autowired
     WeatherService weatherService;
 
-    @Autowired
-    StarLocationService starLocationService;
-
-    @Autowired
-    CustomerService customerService;
-
     @Value("${weather.api.place}")
     private String defaultPlace;
 
@@ -38,50 +32,42 @@ public class MainController {
         //ModelAndView data = new ModelAndView("index");
         //return data;
 
-        return weatherService.makeWebPage(defaultPlace, "index");
+        return weatherService.makeBasicPage(defaultPlace, "index");
     }
 
     @RequestMapping(value = "", method = RequestMethod.POST)
     public ModelAndView processSelectedLocation(PlaceForm filledForm) throws IOException {
         String selectedPlace = filledForm.getPlace();
-        return weatherService.makeWebPage(selectedPlace, "index");
+        return weatherService.makeBasicPage(selectedPlace, "index");
     }
-
-//    @RequestMapping("api/v1/forecastGraph")
-//    public @ResponseBody
-//    List<GraphTemperature> sendForecastData() {
-//        return weatherService.getTemperatureTimeSerie();
-//
-//    }
-//
-
-
 
     @RequestMapping(value = "star/", method = RequestMethod.GET)
     public ModelAndView showFavouriteLocation(@AuthenticationPrincipal OAuth2User oauth2User) throws IOException {
-        String subKod = oauth2User.getAttributes().get("sub").toString();
+        String subCode = oauth2User.getAttributes().get("sub").toString();
         String jmeno = oauth2User.getAttributes().get("name").toString();
         String email = oauth2User.getAttributes().get("email").toString();
 
-        log.info(subKod);
-        log.info(email);
-        log.info(jmeno);
+        log.debug(subCode);
+        log.debug(email);
+        log.debug(jmeno);
 
-        ModelAndView dataHolder = weatherService.makeWebPage(defaultPlace, "star");
-        dataHolder.addObject("email", email);
+        ModelAndView dataHolder = weatherService.makeStarPage("star", subCode, email);
         return dataHolder;
-
-//        Customer vyhledanyZakaznik = customerService.najdiPodleSub(subKod);
-//        if (vyhledanyZakaznik == null) {
-//            Customer novyZakaznik = new Customer(subKod, jmeno, email);
-//            customerService.ulozUzivatele(novyZakaznik);
-//            model.addAttribute("user", novyZakaznik);
-//        } else {
-//            model.addAttribute("user", vyhledanyZakaznik);
-//        }
-//        return "user";
-
     }
+
+    @RequestMapping(value = "star/", method = RequestMethod.POST, params = "saveFavouritePlace")
+    public ModelAndView showFavouriteLocation(@AuthenticationPrincipal OAuth2User oauth2User, PlaceForm filledForm) throws IOException {
+        String newFavouritePlace = filledForm.getPlace();
+        String subCode = oauth2User.getAttributes().get("sub").toString();
+        String email = oauth2User.getAttributes().get("email").toString();
+
+        weatherService.saveNewFavouritePlace(newFavouritePlace, subCode, email);
+
+        ModelAndView dataHolder = weatherService.makeStarPage("star", subCode, email);
+        return dataHolder;
+    }
+
+
 }
 
 

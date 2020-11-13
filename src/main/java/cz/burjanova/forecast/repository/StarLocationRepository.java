@@ -3,12 +3,11 @@ package cz.burjanova.forecast.repository;
 import cz.burjanova.forecast.entity.StarLocation;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.List;
+public interface StarLocationRepository extends JpaRepository<StarLocation, Long> {
 
-public interface StarLocationRepository  extends JpaRepository<StarLocation, Long> {
+//    @Query("SELECT s.location1, s.location2, s.location3 FROM StarLocation s WHERE s.sub = ?1")
+//    List<String> findOnlyPlacesBySub(String sub);
 
-    //User findBySub(String sub);
-
-    List<StarLocation> findBySub(String sub);
+    StarLocation findBySub(String sub);
 
 }
