@@ -45,7 +45,7 @@
 
                 <div>
                     <div th:each="day : ${iconDays}">
-                        <img src="Clear.png" class="column-icon" th:src="@{'images/' + ${day.conditionsIcon}}"
+                        <img src="../static/images/Clear.png" class="column-icon" th:src="@{'images/' + ${day.conditionsIcon}}"
                              alt="weatherIcon">
                     </div>
                     <table style="width: 100%; text-align: center">
@@ -78,6 +78,11 @@
             <h3 class="display-4 text-success" style="padding-top: 10px" >Time series showing 10 days in past and 10 days in future</h3>
             <div id="chartGraph" style="padding-top: 30px">
                 <svg class="line-chart"></svg>
+            </div>
+
+            <div>
+            <img src="../static/images/arrow.png" th:src="@{images/arrow3.png}" class="arrow"/>
+                <p class="text-success" style="text-align: center">today</p>
             </div>
 
         </div>
