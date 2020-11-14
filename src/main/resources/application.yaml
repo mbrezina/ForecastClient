@@ -13,24 +13,6 @@ spring:
         suffix: .html
         cache: false
         encoding: UTF-8
-    #jpa:
-    #    properties:
-    #        hibernate:
-    #            dialect: org.hibernate.dialect.MySQL8Dialect
-    #    hibernate:
-    #        ddl-auto: update
-    #datasource:
-    #    url: jdbc:mysql://localhost:3306/Forecast?serverTimezone=UTC
-    #    username: student
-    #    password: password
-    #    driver-class-name: com.mysql.cj.jdbc.Driver
 
-#
-#---
-#spring:
-#    profiles: prod
-#    datasource:
-#        url: jdbc:mysql://sporteezone-mysql-cluster-do-user-8211485-0.b.db.ondigitalocean.com:25060/Sporteezone?serverTimezone=UTC
-#
-#
+
 
