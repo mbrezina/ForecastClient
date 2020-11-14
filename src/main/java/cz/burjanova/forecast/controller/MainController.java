@@ -66,9 +66,11 @@ public class MainController {
         if (newFavouritePlace.isEmpty()) {
             dataHolder = weatherService.makeStarPage("star", subCode, email);
             dataHolder.addObject("message", "You have not filled any place, try again");
-        } else {
-            weatherService.saveNewFavouritePlace(newFavouritePlace, subCode, email);
+        } else if (weatherService.saveNewFavouritePlace(newFavouritePlace, subCode, email).equals("location is ok")) {
             dataHolder = weatherService.makeStarPage("star", subCode, email);
+        } else {
+            dataHolder = weatherService.makeStarPage("star", subCode, email);
+            dataHolder.addObject("message", "The place you inserted was not found, try another place or check typos");
         }
         return dataHolder;
     }

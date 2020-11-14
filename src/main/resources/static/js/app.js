@@ -56,7 +56,7 @@ function drawChart(data) {
 
     g.append("g")
         .attr("transform", "translate(0," + height + ")")
-        .style("font", "20px arial")
+        .style("font", "14px arial")
         .call(d3.axisBottom(x))
         .select(".domain")
         .remove();
@@ -64,7 +64,7 @@ function drawChart(data) {
     g.append("g")
         .call(d3.axisLeft(y))
         .append("text")
-        .style("font", "24px arial")
+        .style("font", "16px arial")
         .attr("fill", "#000")
         .attr("transform", "rotate(-90)")
         .attr("y", 1)

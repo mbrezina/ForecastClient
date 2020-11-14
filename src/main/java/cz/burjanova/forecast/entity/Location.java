@@ -11,6 +11,12 @@ public class Location {
     private String address;
     private String id;
     private String name;
+    private String message;
 
+    public Location(String message) {
+        this.message = message;
+    }
 
+    public Location() {
+    }
 }

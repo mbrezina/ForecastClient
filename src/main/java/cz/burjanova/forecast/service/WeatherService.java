@@ -13,7 +13,10 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Service
@@ -38,6 +41,7 @@ public class WeatherService {
 
     public Location makeHistoryCall(String place) throws IOException {
         ApiUrl historyUrl = new ApiUrl("history", place, key, prepareTimeFrameQuery());
+        log.debug(String.valueOf(historyUrl));
         return apiCall.doGetRequest(historyUrl.composeHistoryApiUrl());
     }
 
@@ -45,21 +49,8 @@ public class WeatherService {
         ModelAndView dataHolder = new ModelAndView(nameOfWebView);
         Location forecast = makeForecastCall(place);
 
-        if (forecast.getName().equals("not a valid place")) {
-            //log.info(forecast.getName());
-            log.info("inserted place is not valid");
-            dataHolder.addObject("message", "The place " + place + " was not found, try another place or check typos");
-            forecast = makeForecastCall(defaultPlace);
-
-        } else if (forecast.getName().equals("no location inserted")) {
-            log.info("no place inserted into search field");
-            dataHolder.addObject("message", "You have not inserted any place, fill the search field to see the forecast");
-            forecast = makeForecastCall(defaultPlace);
-
-        } else if (forecast.getName().equals("the API key is not valid")) {
-            log.info("**********************************");
-            log.info("NO VALID API KEY");
-            log.info("**********************************");
+        if (forecast.getMessage() != null) {
+            dataHolder.addObject("message", forecast.getMessage());
             forecast = makeForecastCall(defaultPlace);
         }
 
@@ -77,26 +68,25 @@ public class WeatherService {
     public ModelAndView makeStarPage(String nameOfWebView, String subCode, String email) throws IOException {
         ModelAndView dataHolder = new ModelAndView(nameOfWebView);
 
-        StarLocation starLocation = starLocationRepository.findBySub(subCode);
-        log.info("nalezená star location na začátku: " + String.valueOf(starLocation));
+        StarLocation userRecord = starLocationRepository.findBySub(subCode);
+        log.info("userRecord: " + userRecord);
 
         List<String> starLocationList = new ArrayList<>();
 
-        if (starLocation == null) {
+        if (userRecord != null) {
+            starLocationList.add(userRecord.getLocation1());
+            if (userRecord.getLocation2() != null) {
+                starLocationList.add(userRecord.getLocation2());
+            }
+            if (userRecord.getLocation3() != null) {
+                starLocationList.add(userRecord.getLocation3());
+            }
+        } else {
             starLocationRepository.save(new StarLocation(subCode, email, defaultPlace));
             starLocationList.add(defaultPlace);
-        } else {
-            starLocationList.add(starLocation.getLocation1());
-
-            if (starLocation.getLocation2() != null) {
-                starLocationList.add(starLocation.getLocation2());
-            }
-            if (starLocation.getLocation3() != null) {
-                starLocationList.add(starLocation.getLocation3());
-            }
         }
-        log.info(String.valueOf(starLocationList));
-        log.info("délka star location list je " + starLocationList.size());
+
+        log.info("Favourite locations: starLocationList " + starLocationList);
 
         Map<String, List<Weather>> listStarForecast = new LinkedHashMap<>();
 
@@ -118,23 +108,27 @@ public class WeatherService {
     }
 
     public List<Weather> getIconDays(List<Weather> dailyWeather) {
-
         for (Weather day : dailyWeather) {
             day.attachConditionsIcon();
             log.debug(day.getConditionsIcon());
         }
-        return dailyWeather.subList(0, 2);
+        return dailyWeather.subList(0, 3);
     }
 
     public String getTemperatureTimeSerie(String place, Location forecast) throws IOException {
         List<GraphTemperature> listForGraph = new ArrayList<>();
 
         Location history = makeHistoryCall(place);
+        if (history.getMessage() != null) {
+            history = makeForecastCall(defaultPlace);
+        }
 
         for (Weather day : history.getValues()) {
             day.applyJavaScriptDate();
             listForGraph.add(new GraphTemperature(day.getTemp(), day.getJavaScriptDate()));
         }
+
+        log.info("list for graph " + String.valueOf(listForGraph));
 
         for (Weather day : forecast.getValues()) {
             day.applyJavaScriptDate();
@@ -142,13 +136,16 @@ public class WeatherService {
         }
 
         ObjectMapper objectMapper = new ObjectMapper();
+
+        log.debug("timeSerie for graph: " + objectMapper.writeValueAsString(listForGraph));
+
         return objectMapper.writeValueAsString(listForGraph);
     }
 
     public String prepareTimeFrameQuery() {
-        LocalDate startDate = LocalDate.now().minusDays(1);
-        LocalDateTime startDateTime = startDate.atStartOfDay();
-        LocalDateTime endDateTime = startDateTime.minusDays(7);
+        LocalDate endDate = LocalDate.now().minusDays(1);
+        LocalDateTime endDateTime = endDate.atStartOfDay();
+        LocalDateTime startDateTime = endDateTime.minusDays(14);
 
         String queryDatePattern = "yyyy-MM-dd'T'hh:mm:ss";
         DateTimeFormatter queryFormatter = DateTimeFormatter.ofPattern(queryDatePattern);
@@ -161,20 +158,25 @@ public class WeatherService {
         return "startDateTime=" + start + "&endDateTime=" + end;
     }
 
-    public void saveNewFavouritePlace(String newFavouritePlace, String sub, String email) {
+    public String saveNewFavouritePlace(String newFavouritePlace, String sub, String email) throws IOException {
+        Location testForecast = makeForecastCall(newFavouritePlace);
+
+        if (testForecast.getMessage() != null) {
+            return "The place you inserted was not found, try another place or check typos";
+        }
 
         StarLocation existingStarLocation = starLocationRepository.findBySub(sub);
         if (existingStarLocation.getLocation2() == null) {
             existingStarLocation.setLocation2(existingStarLocation.getLocation1());
             existingStarLocation.setLocation1(newFavouritePlace);
             starLocationRepository.save(existingStarLocation);
-
         } else {
             existingStarLocation.setLocation3(existingStarLocation.getLocation2());
             existingStarLocation.setLocation2(existingStarLocation.getLocation1());
             existingStarLocation.setLocation1(newFavouritePlace);
             starLocationRepository.save(existingStarLocation);
-
         }
+
+        return "location is ok";
     }
 }

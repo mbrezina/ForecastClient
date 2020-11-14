@@ -44,8 +44,8 @@
                 </form>
                 <br>
 
-                <div th:each="item : ${listStarForecast}">
-                    <h3 class="display-4">Weather forecast for <span th:text="${item.key}">Amsterdam</span></h3>
+                <div th:each="item : ${listStarForecast}" style="padding-top: 10px">
+                    <h3 class="display-4 text-success">Weather forecast for <span th:text="${item.key}">Amsterdam</span></h3>
                     <div>
                         <div th:each="day : ${item.value}">
                             <img src="Clear.png" class="column-icon"
@@ -67,7 +67,7 @@
                             </tr>
                             <tr>
                                 <td th:each="day : ${item.value}" scope="col">
-                                    <span th:text="${day.temp}"></span> deg. Celsius
+                                    <span th:text="${day.temp}"></span>°C
                                 </td>
                             </tr>
                             <tr>

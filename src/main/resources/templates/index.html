@@ -41,7 +41,7 @@
                     </div>
                 </form>
 
-                <h3 class="display-4">Weather forecast for <span th:text="${nameOfPlace}">Amsterdam</span></h3>
+                <h3 class="display-4 text-success">Weather forecast for <span th:text="${nameOfPlace}">Amsterdam</span></h3>
 
                 <div>
                     <div th:each="day : ${iconDays}">
@@ -63,7 +63,7 @@
                         </tr>
                         <tr>
                             <td th:each="day : ${iconDays}" scope="col">
-                                <span th:text="${day.temp}"></span> deg. Celsius
+                                <span th:text="${day.temp}"></span>°C
                             </td>
                         </tr>
                         <tr>
@@ -75,7 +75,7 @@
                 </div>
             </div>
 
-
+            <h3 class="display-4 text-success" style="padding-top: 10px" >Time series showing 10 days in past and 10 days in future</h3>
             <div id="chartGraph" style="padding-top: 30px">
                 <svg class="line-chart"></svg>
             </div>
